@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Viewing {{ filename }}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #ecf0f1;
+            padding: 20px;
+            text-align: center;
+        }
+
+        iframe {
+            width: 90%;
+            height: 90vh;
+            border: none;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            border-radius: 8px;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <h2>{{ filename }}</h2>
+    <iframe src="{{ url_for('serve_file', filename=filename) }}"></iframe>
+    <br>
+    <a href="{{ url_for('index') }}">← Back to Library</a>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>📚 PDF Library</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #dae2f8, #d6a4a4);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px 40px;
+            margin-top: 50px;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 700px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #34495e;
+        }
+
+        form {
+            margin-bottom: 25px;
+        }
+
+        input[type="file"] {
+            padding: 8px;
+            background-color: #ecf0f1;
+            border: none;
+            border-radius: 8px;
+        }
+
+        button {
+            margin-left: 10px;
+            padding: 10px 20px;
+            border: none;
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .pdf-list {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .pdf-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 12px 18px;
+            margin-bottom: 12px;
+            border-radius: 10px;
+        }
+
+        .pdf-item a {
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .pdf-icon {
+            width: 24px;
+            margin-right: 10px;
+        }
+
+        .message {
+            background-color: #dff9fb;
+            color: #130f40;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 My PDF Library</h1>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="message">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="pdf" accept="application/pdf" required>
+            <button type="submit">Upload</button>
+        </form>
+
+        <div class="pdf-list">
+            {% for file in files %}
+            <div class="pdf-item">
+                <span>
+                    <img class="pdf-icon" src="https://cdn-icons-png.flaticon.com/512/337/337946.png" alt="pdf">
+                    <a href="{{ url_for('view_file', filename=file) }}" target="_blank">{{ file }}</a>
+                </span>
+                <form method="post" action="{{ url_for('delete_file', filename=file) }}" onsubmit="return confirm('Delete {{ file }}?');">
+                    <button type="submit" class="delete-btn">Delete</button>
+                </form>
+            </div>
+            {% else %}
+            <p>No PDFs uploaded yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
